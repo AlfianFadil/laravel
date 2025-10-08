@@ -5,6 +5,10 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\ClassRoom; 
+use App\Models\Student; 
+use App\Models\Teacher;
+use App\Models\Subject;  
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,15 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Classroom::factory(4)->create();
-        // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        $this->call(GuardianSeeder::class);
+        ClassRoom::factory(4)
+         ->student(3)
+         ->create();
+        Subject::factory(5)->has(Teacher::factory(1))->create();
     }
-    
 }

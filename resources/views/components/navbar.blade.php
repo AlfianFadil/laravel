@@ -45,6 +45,18 @@
                   {{ request()->is('classroom') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
                   Classroom 
                 </a>
+                
+                <a href="{{ url('teachers') }}" 
+                  class="rounded-md px-3 py-2 text-sm font-medium 
+                  {{ request()->is('teachers') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                  Teachers  
+                </a>
+                
+                <a href=" url('subjects') " 
+                  class="rounded-md px-3 py-2 text-sm font-medium 
+                  {{ request()->is('subjects') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                  Subjects
+                </a>
 
             </div>
           </div>
@@ -143,6 +155,16 @@
            class="block rounded-md px-3 py-2 text-base font-medium 
            {{ request()->is('classroom') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
            Classroom
+        </a>
+        <a href="{{ url('teachers') }}" 
+           class="block rounded-md px-3 py-2 text-base font-medium 
+           {{ request()->is('teachers') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+           Teachers
+        </a>
+        <a href="{{ url('subjects') }}"
+            class="block rounded-md px-3 py-2 text-base font-medium 
+            {{ request()->is('subjects') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+            Subjects
         </a>
       </div>
 
