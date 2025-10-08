@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('classroom_id')->constrained('classrooms')->onDelete('cascade');
             $table->date('birth_date')->nullable();
             $table->string('email')->unique();
-            $table->string('anddress')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }

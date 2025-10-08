@@ -23,7 +23,7 @@
                     <td class="border px-4 py-2">{{ $student['birthdate'] }}</td>
                     <td class="border px-4 py-2">{{ $student->classroom->name }}</td>
                     <td class="border px-4 py-2">{{ $student['email'] }}</td>
-                    <td class="border px-4 py-2">{{ $student['anddress'] }}</td>
+                    <td class="border px-4 py-2">{{ $student['address'] }}</td>
                 </tr>
                 @endforeach
             </tbody>

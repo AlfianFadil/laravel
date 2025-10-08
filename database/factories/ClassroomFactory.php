@@ -3,10 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Student;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Classroom>
- */
 class ClassroomFactory extends Factory
 {
     public function definition(): array
@@ -20,4 +18,14 @@ class ClassroomFactory extends Factory
             ]),
         ];
     }
+
+    public function withStudents($count = 5)
+    {
+        return $this->afterCreating(function ($classroom) use ($count) {
+            Student::factory($count)->create([
+                'classroom_id' => $classroom->id,
+            ]);
+        });
+    }
 }
+

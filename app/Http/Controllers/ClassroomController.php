@@ -8,14 +8,13 @@ use Illuminate\Http\Request;
 
 class ClassroomController extends Controller
 {
-    public function Classroom()
+    public function index()
     {
-        $classroom = Classroom::all();
-        return view('classrooms',
-         [
+        $classrooms = Classroom::all();
+
+        return view('classrooms', [
             'title' => '🏫 Classroom',
-            'classrooms' => $classroom
-         ]);
+            'classrooms' => $classrooms
+        ]);
     }
 }
-

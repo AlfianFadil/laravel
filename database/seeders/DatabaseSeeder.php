@@ -17,10 +17,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+      ClassRoom::factory(4)
+       ->withStudents(3)
+       ->create();
 
-        ClassRoom::factory(4)
-         ->student(3)
-         ->create();
-        Subject::factory(5)->has(Teacher::factory(1))->create();
+      Subject::factory(5)
+       ->has(Teacher::factory(1))
+       ->create();
+
     }
 }
