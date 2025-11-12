@@ -7,52 +7,68 @@ use Illuminate\Http\Request;
 
 class GuardianController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $guardians = Guardian::all();
-        return view('guardians.index', compact('guardians'));
+        // $student = [
+        //     ['id' => 1,'name' => 'Aldestha Nendrayanto', 'email' => 'nendra@gmail.com', 'address' => 'Gribig', 'kelas' => '11 PPLG 1'],
+        //     ['id' => 2,'name' => 'Aldikky Arfian Susanto', 'email' => 'dikky@gmail.com', 'address' => 'Kudus', 'kelas' => '11 PPLG 1'],
+        //     ['id' => 3,'name' => 'Alfian Fadhil Pradana', 'email' => 'fadhil@example.com', 'address' => 'Kudus', 'kelas' => '11 PPLG 1'],
+        //     ['id' => 4,'name' => 'Almira Natahania', 'email' => 'mira@gmail.com', 'address' => 'Kudus', 'kelas' => '11 PPLG 1'],
+        //     ['id' => 5,'name' => 'Arza Armandhito', 'email' => 'arza@gmail.com', 'address' => 'Kudus', 'kelas' => '11 PPLG 1'],
+        // ];
+
+        $guardian = Guardian::all();
+        return view('guardian', ['title' => 'Guardian', 'guardian' => $guardian]);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return view('guardians.create');
+        //
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:guardians',
-        ]);
-
-        Guardian::create($request->all());
-        return redirect()->route('guardians.index')->with('success', 'Data guardian berhasil ditambahkan');
+        //
     }
 
-    public function show(Guardian $guardian)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        return view('guardians.show', compact('guardian'));
+        //
     }
 
-    public function edit(Guardian $guardian)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        return view('guardians.edit', compact('guardian'));
+        //
     }
 
-    public function update(Request $request, Guardian $guardian)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:guardians,email,' . $guardian->id,
-        ]);
-
-        $guardian->update($request->all());
-        return redirect()->route('guardians.index')->with('success', 'Data guardian berhasil diperbarui');
+        //
     }
 
-    public function destroy(Guardian $guardian)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
-        $guardian->delete();
-        return redirect()->route('guardians.index')->with('success', 'Data guardian berhasil dihapus');
+        //
     }
 }

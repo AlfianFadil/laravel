@@ -1,30 +1,26 @@
 <x-layout>
-    <x-slot:judul>{{ $title }} </x-slot:judul>
+    <x-slot:judul>{{ $title }}</x-slot:judul>
 
-    <div class="w-full max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h1 class="text-2xl font-bold mb-4 text-center">Student List</h1>
-
-        <table class="w-full border border-gray-300 text-sm text-left">
-            <thead class="bg-gray-200">
+    <div class="max-w-8xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-5">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100">
                 <tr>
-                    <th class="border px-4 py-2">No</th>
-                    <th class="border px-4 py-2">Name</th>
-                    <th class="border px-4 py-2">tanggal lahir</th>
-                    <th class="border px-4 py-2">Email</th>
-                    <th class="border px-4 py-2">Class</th>
-                    <th class="border px-4 py-2">Alamat</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NO</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($students as $student)
-                <tr>
-                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                    <td class="border px-4 py-2">{{ $student['name'] }}</td>
-                    <td class="border px-4 py-2">{{ $student['birthdate'] }}</td>
-                    <td class="border px-4 py-2">{{ $student->classroom->name }}</td>
-                    <td class="border px-4 py-2">{{ $student['email'] }}</td>
-                    <td class="border px-4 py-2">{{ $student['address'] }}</td>
-                </tr>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach ($students as $index => $user)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $loop->iteration }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->address }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user->classroom->name ?? '-' }}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

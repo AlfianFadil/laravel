@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Subject>
  */
 class SubjectFactory extends Factory
 {
@@ -14,17 +14,14 @@ class SubjectFactory extends Factory
      *
      * @return array<string, mixed>
      */
-      public function definition(): array
+    public function definition(): array
     {
-       return [
-            'name'=>\fake()->unique()->randomElement([
-             'Bahasa Indonesia',
-             'Matematika',
-             'Seni Budaya',
-             'Bahasa Inggris', 
-             'Bahasa jepang',]),
-            'description'=>\fake()->text()
+        return [
+           'name' => fake()->unique()->randomElement([
+                'MobileDevelopment', 'WebDevelopment', 'IoT', 'GameDevelopment', 'DekstopDevelopment'
+        ]),
+        'description' => fake()->sentence(1,20),
         ];
+    }
 }
-}
- 
+

@@ -3,9 +3,10 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Subject;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Teacher>
  */
 class TeacherFactory extends Factory
 {
@@ -16,11 +17,13 @@ class TeacherFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'name'=>\fake()->name(),
-            'phone'=>\fake()->phoneNumber(),
-            'email'=>\fake()->unique()->safeEmail(),
-            'address'=>\fake()->address(),
+return [
+            'name' => fake()->name(),
+            'subject_id' => Subject::factory(), 
+            'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->phoneNumber(),
+            'address' => fake()->address(),
+            
         ];
     }
 }

@@ -1,37 +1,28 @@
-@extends('layouts.app')
+<x-layout>
+    <x-slot:judul>{{ $title }}</x-slot:judul>
 
-@section('content')
-<div class="container">
-    <h1>Daftar Guardians</h1>
-    <a href="{{ route('guardians.create') }}" class="btn btn-primary mb-3">Tambah Guardian</a>
-
-    <table class="table table-bordered">
-        <tr>
-            <th>ID</th>
-            <th>Nama</th>
-            <th>Pekerjaan</th>
-            <th>Telepon</th>
-            <th>Email</th>
-            <th>Aksi</th>
-        </tr>
-        @foreach($guardians as $guardian)
-        <tr>
-            <td>{{ $guardian->id }}</td>
-            <td>{{ $guardian->name }}</td>
-            <td>{{ $guardian->job }}</td>
-            <td>{{ $guardian->phone }}</td>
-            <td>{{ $guardian->email }}</td>
-            <td>
-                <a href="{{ route('guardians.show',$guardian->id) }}" class="btn btn-info btn-sm">Detail</a>
-                <a href="{{ route('guardians.edit',$guardian->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                <form action="{{ route('guardians.destroy',$guardian->id) }}" method="POST" style="display:inline">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus data ini?')">Hapus</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </table>
-</div>
-@endsection
+    <div class="max-w-8xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-5">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NO</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach ($guardian as $index => $user)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $loop->iteration }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user['name'] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user['job'] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user['email'] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $user['address'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</x-layout>

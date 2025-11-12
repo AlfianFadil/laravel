@@ -3,29 +3,23 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Student;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Classroom>
+ */
 class ClassroomFactory extends Factory
 {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->randomElement([
-                '10 PPLG 1',
-                '10 PPLG 2',
-                '11 PPLG 1',
-                '11 PPLG 2',
-            ]),
+           'name' => fake()->unique()->randomElement([
+                '10 PPLG 1', '10 PPLG 2', '11 PPLG 1', '11 PPLG 2'
+        ]),
         ];
     }
-
-    public function withStudents($count = 5)
-    {
-        return $this->afterCreating(function ($classroom) use ($count) {
-            Student::factory($count)->create([
-                'classroom_id' => $classroom->id,
-            ]);
-        });
-    }
 }
-

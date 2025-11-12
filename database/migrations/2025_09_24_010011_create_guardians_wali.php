@@ -9,16 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
+public function up()
 {
     Schema::create('guardians', function (Blueprint $table) {
         $table->id();
         $table->string('name');
-        $table->string('job')->nullable();
-        $table->string('phone')->nullable();
-        $table->string('email')->unique();
-        $table->string('address')->nullable();
-        $table->timestamps();
+        $table->string('job');
+        $table->string('email');
+        $table->string('address');
+        $table->timestamps(); 
     });
 }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('guardian');
+        Schema::dropIfExists('guardians');
     }
 };

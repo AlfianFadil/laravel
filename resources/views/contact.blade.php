@@ -1,27 +1,11 @@
 <x-layout>
-    <x-slot:judul>📞 Contact</x-slot:judul>
+    <x-slot:judul>Contact</x-slot:judul>
 
-  <p> MY Contact :</p>
-  <h2>~<h2>
-  <form>
-    <label>Nama:</label><br>
-    <input type="text" name="nama" value="Alfian fadil"><br><br>
-
-    <label>Email:</label><br>
-    <input type="email" name="email"><br><br>
-
-    <label>Pesan:</label><br>
-    <textarea name="pesan" rows="3" cols="40"></textarea><br><br>
-
-    <button type="submit">Kirim</button>
-  </form>
-
-  <hr>
- <h1>~</h1>
-  <h2>📍 Info Kontak Lain</h2>
-  <ul>
-    <li>Email: mywifebeth27@gmail.com</li>
-    <li>Instagram: @molcy</li>
-    <li>WhatsApp: 08529948755</li>
-  </ul>
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="text-center text-white"> 
+            <h1 class="text-3xl font-bold mb-6">Kontak Saya</h1>
+            <p class="text-lg">Email: mywifebeth27@gmail.com</p>
+            <p class="text-lg">Instagram: @molcy</p>
+        </div>
+    </div>
 </x-layout>

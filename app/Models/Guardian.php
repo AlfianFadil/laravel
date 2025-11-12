@@ -12,9 +12,7 @@ class Guardian extends Model
     protected $fillable = [
         'name',
         'job',
-        'phone',
         'email',
         'address',
     ];
 }
-

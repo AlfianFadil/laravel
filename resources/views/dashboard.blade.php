@@ -1,14 +1,22 @@
-<x-layout>
-    <x-slot:judul>📊 Dashboard</x-slot:judul>
-
-    <h1 class="text-xl font-semibold mb-2">welcome, <b>Alfian fadil</b>!</h1>
-    <p>Kelas: <b>11PPLG</b> | Absen: <b>03</b></p>
-
-    <hr class="my-4 border-gray-300">
-
-    <h2 class="text-lg font-bold mb-2">Todo list</h2>
-    <ul class="list-disc list-inside space-y-1">
-        <li>📌 Tugas yang harus dikumpulkan: 1</li>
-        <li>📚 Jadwal pelajaran berikutnya: pkk</li>
-    </ul>
-</x-layout>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<x-layout></x-layout>
+<body class="bg-gray-900 text-white">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold mb-6">Selamat Datang di Website Saya</h1>
+            <p class="text-lg">Ini adalah halaman beranda sederhana menggunakan Laravel.</p>
+        </div>
+    </div>
+    <style>
+        body {
+            background-color: #0b1a2a; /* Warna gelap */
+            color: white; /* Ubah teks menjadi putih */
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</body>
+</html>
