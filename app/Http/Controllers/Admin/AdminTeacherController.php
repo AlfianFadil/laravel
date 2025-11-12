@@ -18,7 +18,6 @@ class AdminTeacherController extends Controller
             'teacher' => $teachers
         ]);
     }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -30,13 +29,11 @@ class AdminTeacherController extends Controller
             'address' => 'required',
         ]);
 
-        // 1️⃣ Buat subject dulu
         $subject = Subject::create([
             'name' => $request->subject_name,
             'description' => $request->subject_description ?? 'Belum ada deskripsi',
         ]);
 
-        // 2️⃣ Buat teacher dan isi subject_id dari subject yang baru dibuat
         $teacher = Teacher::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -45,8 +42,6 @@ class AdminTeacherController extends Controller
             'subject_id' => $subject->id,
         ]);
 
-        // ✅ Tidak perlu buat Subject kedua atau pakai save()
-        // Relasi sudah otomatis terhubung lewat subject_id
 
         return redirect()->back()->with('success', 'Teacher dan Subject berhasil ditambahkan!');
     }

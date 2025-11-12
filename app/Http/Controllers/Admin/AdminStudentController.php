@@ -9,7 +9,6 @@ use App\Models\Classroom;
 
 class AdminStudentController extends Controller
 {
-    // Menampilkan daftar student + modal tambah
     public function index()
     {
         $students = Student::with('classroom')->get();
@@ -22,7 +21,6 @@ class AdminStudentController extends Controller
         ]);
     }
 
-    // Simpan data student baru
     public function store(Request $request)
     {
         $validated = $request->validate([

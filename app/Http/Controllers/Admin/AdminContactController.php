@@ -8,7 +8,6 @@ class AdminContactController extends Controller
 {
     public function index()
     {
-        // Data kontak bisa kamu ubah sesuai kebutuhan
         $contact = [
             'email' => 'mywifebeth27@gmail.com',
             'instagram' => '@molcy',
