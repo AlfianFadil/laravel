@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// PUBLIC CONTROLLERS
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StudentController;
@@ -10,64 +12,100 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\ProfilController;
 
-// Controller Admin
+// ADMIN CONTROLLERS
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProfilController;
+use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminStudentController;
 use App\Http\Controllers\Admin\AdminTeacherController;
 use App\Http\Controllers\Admin\AdminGuardianController;
 use App\Http\Controllers\Admin\AdminSubjectController;
 use App\Http\Controllers\Admin\AdminClassroomController;
-use App\Http\Controllers\Admin\AdminProfilController;
-use App\Http\Controllers\Admin\AdminContactController;
-use App\Http\Controllers\Admin\AdminDashboardController;
-
-// Redirect root langsung ke dashboard admin
-Route::get('/', function () {
-    return redirect()->route('admin.dashboard');
-});
 
 
-// ================== ROUTE UNTUK USER / PUBLIC ===========
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
-    Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
-    Route::get('/student', [StudentController::class, 'index'])->name('student');
-    Route::get('/guardian', [GuardianController::class, 'index'])->name('guardian');
-    Route::get('/classroom', [ClassroomController::class, 'index'])->name('classroom');
-    Route::get('/teacher', [TeacherController::class, 'index'])->name('teacher');
-    Route::get('/subject', [SubjectController::class, 'index'])->name('subject');
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES (USER)
+|--------------------------------------------------------------------------
+*/
+
+// Halaman utama
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Halaman publik lainnya
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
+Route::get('/student', [StudentController::class, 'index'])->name('student');
+Route::get('/guardian', [GuardianController::class, 'index'])->name('guardian');
+Route::get('/teacher', [TeacherController::class, 'index'])->name('teacher');
+Route::get('/subject', [SubjectController::class, 'index'])->name('subject');
+Route::get('/classroom', [ClassroomController::class, 'index'])->name('classroom');
 
 
-// ================== ROUTE UNTUK ADMIN PANEL ==================
+/*
+|--------------------------------------------------------------------------
+| ADMIN ROUTES
+|--------------------------------------------------------------------------
+*/
 Route::prefix('admin')->name('admin.')->group(function () {
 
-    // Dashboard admin
-    Route::get('/dashboard', [HomeController::class, 'adminDashboard'])->name('dashboard');
+    // Dashboard
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+        ->name('dashboard');
 
-    // Profil admin
-    Route::get('/profil', [AdminProfilController::class, 'index'])->name('profil');
+    // Profil Admin
+    Route::get('/profil', [AdminProfilController::class, 'index'])
+        ->name('profil');
 
-    // Contact admin
-    Route::get('/kontak', [AdminContactController::class, 'index'])->name('contact.index');
+    // Contact Admin
+    Route::get('/kontak', [AdminContactController::class, 'index'])
+        ->name('contact.index');
 
-    // Classroom admin
-    Route::get('/classroom', [ClassroomController::class, 'adminIndex'])->name('classroom.index');
-    Route::post('/classroom', [ClassroomController::class, 'store'])->name('classroom.store');
+    // CRUD Classroom Admin
+    Route::resource('classroom', AdminClassroomController::class)->except(['show'])->names([
+        'index'   => 'classroom.index',
+        'create'  => 'classroom.create',
+        'store'   => 'classroom.store',
+        'edit'    => 'classroom.edit',
+        'update'  => 'classroom.update',
+    ]);
 
-    // Student admin
-    Route::get('/student', [AdminStudentController::class, 'index'])->name('student.index');
-    Route::post('/student', [AdminStudentController::class, 'store'])->name('student.store');
+   // STUDENT ADMIN - FULL CRUD
+    Route::resource('student', AdminStudentController::class)->names([
+        'index' => 'student.index',
+        'store' => 'student.store',
+        'edit' => 'student.edit',
+        'update' => 'student.update',
+        'destroy' => 'student.destroy',
+   ]);
 
-    // Teacher admin
-    Route::get('/teacher', [AdminTeacherController::class, 'index'])->name('teacher.index');
-    Route::post('/teacher', [AdminTeacherController::class, 'store'])->name('teacher.store');
 
-    // Guardian admin
-    Route::get('/guardian', [AdminGuardianController::class, 'index'])->name('guardian.index');
-    Route::post('/guardian', [AdminGuardianController::class, 'store'])->name('guardian.store');
+    Route::resource('teacher', AdminTeacherController::class)->except(['show'])->names([
+        'index'   => 'teacher.index',
+        'create'  => 'teacher.create',
+        'store'   => 'teacher.store',
+        'edit'    => 'teacher.edit',
+        'update'  => 'teacher.update',
+        'destroy' => 'teacher.destroy',
+    ]);
 
-    // Subject admin
-    Route::get('/subject', [AdminSubjectController::class, 'index'])->name('subject.index');
-    Route::post('/subject', [AdminSubjectController::class, 'store'])->name('subject.store');
+    Route::resource('guardian', AdminGuardianController::class)->names([
+        'index' => 'guardian.index',
+        'create' => 'guardian.create',
+        'store' => 'guardian.store',
+        'edit' => 'guardian.edit',
+        'update' => 'guardian.update',
+        'destroy' => 'guardian.destroy',
+    ]);
 
-    
+
+   // SUBJECT ADMIN - FULL CRUD
+   Route::resource('subject', AdminSubjectController::class)->except(['show'])->names([
+       'index'   => 'subject.index',
+       'create'  => 'subject.create',
+       'store'   => 'subject.store',
+       'edit'    => 'subject.edit',
+       'update'  => 'subject.update',
+    ]);
+
 });

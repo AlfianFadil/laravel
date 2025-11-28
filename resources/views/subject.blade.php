@@ -8,21 +8,31 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NO</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject Name</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teachers</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @foreach ($subject as $index => $name)
+
+                @foreach ($subject as $name)
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $loop->iteration }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $name["name"] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $name["description"] }}</td>
-                        <td class = "px-6 py-4">
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ $loop->iteration }}</td>
+
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            {{ $name->name }}
+                        </td>
+
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            {{ $name->description }}
+                        </td>
+
+                        <td class="px-6 py-4 text-sm text-gray-700">
                             @foreach ($name->teachers as $teacher)
                                 {{ $teacher->name }} <br>
                             @endforeach
                         </td>
                     </tr>
                 @endforeach
+
             </tbody>
         </table>
     </div>

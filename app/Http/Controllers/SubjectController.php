@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    public function index()
-    {
-        $subject = Subject::all(); 
-        return view('subject', [
-            'title' => 'Subject', 
-            'subject' => $subject
-        ]);
-    }
+ public function index()
+{
+    $subjects = Subject::with('teachers')->get();
+
+    return view('subject', [
+        'title' => 'Subject',
+        'subject' => $subjects
+    ]);
+}
+
 }

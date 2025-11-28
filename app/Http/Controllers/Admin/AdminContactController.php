@@ -14,7 +14,7 @@ class AdminContactController extends Controller
             'whatsapp' => '+62 851-8924-8238'
         ];
 
-        return view('components.admin.contact', [
+        return view('admin.contact', [
             'title' => 'Kontak Admin',
             'email' => $contact['email'],
             'instagram' => $contact['instagram'],

@@ -3,46 +3,85 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Teacher;
 use App\Models\Subject;
-use Illuminate\Http\Request;
 
 class AdminTeacherController extends Controller
 {
+    /**
+     * Tampilkan semua teacher
+     */
     public function index()
     {
         $teachers = Teacher::with('subject')->get();
+        $subjects = Subject::all();
 
-        return view('components.admin.teacher', [
-            'title' => 'Teacher List',
-            'teacher' => $teachers
+        return view('admin.teachers.teacher', [
+            'title' => 'Data Teachers',
+            'teachers' => $teachers,
+            'subjects' => $subjects,
         ]);
     }
+
+    /**
+     * Store teacher baru
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'subject_name' => 'required',
-            'subject_description' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'address' => 'required',
+        $validated = $request->validate([
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|email|unique:teachers,email',
+            'phone'      => 'required|string|max:20',
+            'address'    => 'required|string',
+            'subject_id' => 'required|exists:subjects,id'
         ]);
 
-        $subject = Subject::create([
-            'name' => $request->subject_name,
-            'description' => $request->subject_description ?? 'Belum ada deskripsi',
+        Teacher::create($validated);
+
+        return redirect()->route('admin.teacher.index')
+            ->with('success', 'Teacher berhasil ditambahkan!');
+    }
+
+    /**
+     * Ambil data teacher untuk modal edit
+     */
+    public function edit($id)
+    {
+        $teacher = Teacher::findOrFail($id);
+        return response()->json($teacher);
+    }
+
+    /**
+     * Update teacher 
+     */
+    public function update(Request $request, $id)
+    {
+        $teacher = Teacher::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|email|unique:teachers,email,' . $teacher->id,
+            'phone'      => 'required|string|max:20',
+            'address'    => 'required|string',
+            'subject_id' => 'required|exists:subjects,id'
         ]);
 
-        $teacher = Teacher::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'subject_id' => $subject->id,
-        ]);
+        $teacher->update($validated);
 
+        return redirect()->route('admin.teacher.index')
+            ->with('success', 'Teacher berhasil diupdate!');
+    }
 
-        return redirect()->back()->with('success', 'Teacher dan Subject berhasil ditambahkan!');
+    /**
+     * Hapus teacher
+     */
+    public function destroy($id)
+    {
+        $teacher = Teacher::findOrFail($id);
+        $teacher->delete();
+
+        return redirect()->route('admin.teacher.index')
+            ->with('success', 'Teacher berhasil dihapus!');
     }
 }
