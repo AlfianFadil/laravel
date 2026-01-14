@@ -30,11 +30,12 @@
         </div>
 
         <!-- Error -->
-        @if(session('error'))
-            <div class="mb-4 text-sm text-red-400 bg-red-900/30 border border-red-800 rounded px-3 py-2">
-                {{ session('error') }}
-            </div>
-        @endif
+        @if ($errors->any())
+       <div class="mb-4 text-sm text-red-400 bg-red-900/30 border border-red-800 rounded px-3 py-2">
+        {{ $errors->first() }}
+       </div>
+       @endif
+
 
         <!-- Form -->
         <form method="POST" action="{{ route('login.process') }}" class="space-y-5">
