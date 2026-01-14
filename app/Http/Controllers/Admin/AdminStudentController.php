@@ -9,16 +9,29 @@ use App\Models\Classroom;
 
 class AdminStudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::with('classroom')->get();
+        $title = 'Data Students';
+
+        $students = Student::with('classroom')
+            ->when($request->search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhereHas('classroom', function ($q) use ($search) {
+                          $q->where('name', 'like', "%{$search}%");
+                      });
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(5)
+            ->withQueryString(); // penting agar search tidak hilang saat pindah page
+
         $classrooms = Classroom::all();
 
-        return view('admin.studenents.student', [
-            'title' => 'Data Students',
-            'students' => $students,
-            'classrooms' => $classrooms
-        ]);
+        return view('admin.studenents.student', compact(
+            'title',
+            'students',
+            'classrooms'
+        ));
     }
 
     public function store(Request $request)
@@ -32,16 +45,18 @@ class AdminStudentController extends Controller
 
         Student::create($validated);
 
-        return redirect()->route('admin.student.index')->with('success', 'Student berhasil ditambahkan!');
+        return redirect()
+            ->route('admin.student.index')
+            ->with('success', 'Student berhasil ditambahkan!');
     }
 
     /**
-     * Ambil data student untuk modal edit
+     * Ambil data student (AJAX Edit)
      */
     public function edit($id)
     {
         $student = Student::findOrFail($id);
-        return response()->json($student); // dipakai AJAX
+        return response()->json($student);
     }
 
     /**
@@ -60,7 +75,9 @@ class AdminStudentController extends Controller
 
         $student->update($validated);
 
-        return redirect()->route('admin.student.index')->with('success', 'Student berhasil diupdate!');
+        return redirect()
+            ->route('admin.student.index')
+            ->with('success', 'Student berhasil diupdate!');
     }
 
     /**
@@ -71,6 +88,8 @@ class AdminStudentController extends Controller
         $student = Student::findOrFail($id);
         $student->delete();
 
-        return redirect()->route('admin.student.index')->with('success', 'Student berhasil dihapus!');
+        return redirect()
+            ->route('admin.student.index')
+            ->with('success', 'Student berhasil dihapus!');
     }
 }

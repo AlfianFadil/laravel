@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+
 // PUBLIC CONTROLLERS
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
@@ -11,6 +17,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\AuthController;
 
 // ADMIN CONTROLLERS
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -32,7 +39,7 @@ use App\Http\Controllers\Admin\AdminClassroomController;
 // Halaman utama
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Halaman publik lainnya
+// Halaman publik
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
 Route::get('/student', [StudentController::class, 'index'])->name('student');
@@ -44,68 +51,61 @@ Route::get('/classroom', [ClassroomController::class, 'index'])->name('classroom
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN ROUTES
+| AUTH ROUTES (GLOBAL)
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->group(function () {
 
-    // Dashboard
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-        ->name('dashboard');
+Route::get('/login', [AuthController::class, 'show_login'])
+    ->middleware('guest')
+    ->name('login');
 
-    // Profil Admin
-    Route::get('/profil', [AdminProfilController::class, 'index'])
-        ->name('profil');
+Route::post('/login', [AuthController::class, 'login'])
+    ->middleware('guest')
+    ->name('login.process');
 
-    // Contact Admin
-    Route::get('/kontak', [AdminContactController::class, 'index'])
-        ->name('contact.index');
-
-    // CRUD Classroom Admin
-    Route::resource('classroom', AdminClassroomController::class)->except(['show'])->names([
-        'index'   => 'classroom.index',
-        'create'  => 'classroom.create',
-        'store'   => 'classroom.store',
-        'edit'    => 'classroom.edit',
-        'update'  => 'classroom.update',
-    ]);
-
-   // STUDENT ADMIN - FULL CRUD
-    Route::resource('student', AdminStudentController::class)->names([
-        'index' => 'student.index',
-        'store' => 'student.store',
-        'edit' => 'student.edit',
-        'update' => 'student.update',
-        'destroy' => 'student.destroy',
-   ]);
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
 
 
-    Route::resource('teacher', AdminTeacherController::class)->except(['show'])->names([
-        'index'   => 'teacher.index',
-        'create'  => 'teacher.create',
-        'store'   => 'teacher.store',
-        'edit'    => 'teacher.edit',
-        'update'  => 'teacher.update',
-        'destroy' => 'teacher.destroy',
-    ]);
+/*
+|--------------------------------------------------------------------------
+| ADMIN ROUTES (PROTECTED)
+|--------------------------------------------------------------------------
+*/
 
-    Route::resource('guardian', AdminGuardianController::class)->names([
-        'index' => 'guardian.index',
-        'create' => 'guardian.create',
-        'store' => 'guardian.store',
-        'edit' => 'guardian.edit',
-        'update' => 'guardian.update',
-        'destroy' => 'guardian.destroy',
-    ]);
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware('auth')
+    ->group(function () {
 
+        // Dashboard
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
 
-   // SUBJECT ADMIN - FULL CRUD
-   Route::resource('subject', AdminSubjectController::class)->except(['show'])->names([
-       'index'   => 'subject.index',
-       'create'  => 'subject.create',
-       'store'   => 'subject.store',
-       'edit'    => 'subject.edit',
-       'update'  => 'subject.update',
-    ]);
+        // Profil Admin
+        Route::get('/profil', [AdminProfilController::class, 'index'])
+            ->name('profil');
 
-});
+        // Contact Admin
+        Route::get('/kontak', [AdminContactController::class, 'index'])
+            ->name('contact.index');
+
+        // Classroom Admin
+        Route::resource('classroom', AdminClassroomController::class)
+            ->except(['show']);
+
+        // Student Admin
+        Route::resource('student', AdminStudentController::class);
+
+        // Teacher Admin
+        Route::resource('teacher', AdminTeacherController::class)
+            ->except(['show']);
+
+        // Guardian Admin
+        Route::resource('guardian', AdminGuardianController::class);
+
+        // Subject Admin
+        Route::resource('subject', AdminSubjectController::class)
+            ->except(['show']);
+    });

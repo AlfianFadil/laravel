@@ -8,21 +8,24 @@ use Illuminate\Http\Request;
 
 class AdminGuardianController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $guardian = Guardian::all();
+        $title = 'Guardian List';
 
-        return view('admin.guardians.guardian', [
-            'title' => 'Guardian List',
-            'guardian' => $guardian
-        ]);
-    }
+        $guardian = Guardian::when($request->search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                      ->orWhere('job', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('address', 'like', "%{$search}%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(5)            // ✅ pagination 5 data
+            ->withQueryString();     // ✅ search tetap saat pindah halaman
 
-    public function create()
-    {
-        return view('admin.guardians.create', [
-            'title' => 'Add Guardian'
-        ]);
+        return view('admin.guardians.guardian', compact(
+            'title',
+            'guardian'
+        ));
     }
 
     public function store(Request $request)
@@ -36,7 +39,8 @@ class AdminGuardianController extends Controller
 
         Guardian::create($request->all());
 
-        return redirect()->route('admin.guardian.index')
+        return redirect()
+            ->route('admin.guardian.index')
             ->with('success', 'Guardian berhasil ditambahkan!');
     }
 
@@ -44,10 +48,9 @@ class AdminGuardianController extends Controller
     {
         $guardian = Guardian::findOrFail($id);
 
-        return view('admin.guardians.edit', [
-            'title' => 'Edit Guardian',
-            'guardian' => $guardian
-        ]);
+        return view('admin.guardians.edit', compact(
+            'guardian'
+        ));
     }
 
     public function update(Request $request, $id)
@@ -63,7 +66,8 @@ class AdminGuardianController extends Controller
 
         $guardian->update($request->all());
 
-        return redirect()->route('admin.guardian.index')
+        return redirect()
+            ->route('admin.guardian.index')
             ->with('success', 'Guardian berhasil diperbarui!');
     }
 
@@ -72,7 +76,8 @@ class AdminGuardianController extends Controller
         $guardian = Guardian::findOrFail($id);
         $guardian->delete();
 
-        return redirect()->route('admin.guardian.index')
+        return redirect()
+            ->route('admin.guardian.index')
             ->with('success', 'Guardian berhasil dihapus!');
     }
 }

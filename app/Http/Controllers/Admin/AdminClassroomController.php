@@ -9,24 +9,24 @@ use App\Models\Classroom;
 class AdminClassroomController extends Controller
 {
     /**
-     * Tampilkan semua classroom
+     * Tampilkan semua classroom (Search + Pagination)
      */
-    public function index()
+    public function index(Request $request)
     {
-        $classrooms = Classroom::orderBy('created_at', 'DESC')->get();
         $title = "Data Classroom";
 
-        return view('admin.classrooms.classrooms', compact('classrooms', 'title'));
-    }
+        $classrooms = Classroom::withCount('students') // ⬅ hitung siswa tanpa N+1
+            ->when($request->search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(5)           // ⬅ pagination 5 data
+            ->withQueryString();    // ⬅ search tetap saat pindah page
 
-    /**
-     * (Tidak dipakai karena create memakai modal)
-     */
-    public function create()
-    {
-        return view('admin.classrooms.create', [
-            'title' => 'Tambah Kelas'
-        ]);
+        return view('admin.classrooms.classrooms', compact(
+            'classrooms',
+            'title'
+        ));
     }
 
     /**
@@ -42,7 +42,8 @@ class AdminClassroomController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->route('admin.classroom.index')
+        return redirect()
+            ->route('admin.classroom.index')
             ->with('success', 'Classroom berhasil ditambahkan!');
     }
 
@@ -54,7 +55,10 @@ class AdminClassroomController extends Controller
         $classroom = Classroom::findOrFail($id);
         $title = "Edit Classroom";
 
-        return view('admin.classrooms.edit', compact('classroom', 'title'));
+        return view('admin.classrooms.edit', compact(
+            'classroom',
+            'title'
+        ));
     }
 
     /**
@@ -65,12 +69,13 @@ class AdminClassroomController extends Controller
         $request->validate([
             'name' => 'required|min:2|max:100',
         ]);
- 
+
         Classroom::where('id', $id)->update([
             'name' => $request->name,
         ]);
 
-        return redirect()->route('admin.classroom.index')
+        return redirect()
+            ->route('admin.classroom.index')
             ->with('success', 'Classroom berhasil diperbarui!');
     }
 
@@ -81,7 +86,8 @@ class AdminClassroomController extends Controller
     {
         Classroom::destroy($id);
 
-        return redirect()->route('admin.classroom.index')
+        return redirect()
+            ->route('admin.classroom.index')
             ->with('success', 'Classroom berhasil dihapus!');
     }
 }
